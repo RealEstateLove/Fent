@@ -4193,5 +4193,276 @@ end
             return self
         end 
     -- 
--- 
-return library
+-- documentation 
+local window = library:window({name = os.date('MilkyBoy - %b %d %Y'), size = dim2(0, 614, 0, 639)})
+
+local Aiming = window:tab({name = "Aiming"})
+local Misc = window:tab({name = "Misc"})
+
+-- Aiming
+local column = Aiming:column() 
+column:section({name = "Target Selection"})
+    :toggle({name = "Silent Aim", flag = "silent_aim", callback = function(bool)
+        aimbool = bool
+        if bool then
+            require(game.ReplicatedStorage.Modules.FPS.Bullet).CreateBullet = aimmodfunc
+        else
+            require(game.ReplicatedStorage.Modules.FPS.Bullet).CreateBullet = aimogfunc
+        end
+    end})
+    :toggle({name = "Visibility Check", flag = "visibility_check", callback = function(bool)
+        aimvischeck = bool
+    end})
+    :toggle({name = "Ping Check", flag = "ping_check", callback = function(bool)
+        aimselftrack = bool
+    end})
+    :toggle({name = "Ammo Distance Check", flag = "ammo_distance_check", callback = function(bool)
+        aimdistcheck = bool
+    end})
+    :toggle({name = "Trigger Bot", flag = "trigger_bot", callback = function(bool)
+        aimtrigger = bool
+    end})
+    :toggle({name = "Target AI", flag = "target_ai", callback = function(bool)
+        aimbots = bool
+    end})
+    :toggle({name = "Fake Wait", flag = "fake_wait", callback = function(bool)
+        aimfakewait = bool
+    end})
+    :toggle({name = "Dynamic FOV", flag = "dynamic_fov", callback = function(bool)
+        aimdynamicfov = bool
+    end})
+    :slider({name = "Aim FOV", flag = "aim_fov", min = 0, max = 250, default = 150, callback = function(value)
+        aimfov = value
+    end})
+    :slider({name = "Aim Distance", flag = "aim_distance", min = 50, max = 950, default = 800, callback = function(value)
+        aimdistance = value
+    end})
+    :slider({name = "Hit Chance", flag = "hit_chance", min = 0, max = 100, default = 100, callback = function(value)
+        aimchance = value
+    end})
+    :dropdown({name = "Aim Part", flag = "aim_part", items = {"Head", "HeadTop", "Face", "Torso", "Scripted", "Random"}, default = "Head", callback = function(option)
+        aimpart = option
+    end})
+    :dropdown({name = "Aim Type", flag = "aim_type", items = {"Prediction", "Instant Hit"}, default = "Instant Hit", callback = function(option)
+        aimtype = option
+    end})
+    :toggle({name = "Show FOV", flag = "show_fov", callback = function(bool)
+        aimfovcircle.Visible = bool
+    end})
+    :colorpicker({name = "FOV Color", flag = "fov_color", color = Color3.fromRGB(255, 255, 255), callback = function(color)
+        aimfovcircle.Color = color
+    end})
+    :toggle({name = "Snapline", flag = "snapline", callback = function(bool)
+        snaplinebool = bool
+    end})
+    :slider({name = "Thickness", flag = "thickness", min = 0.01, max = 5, default = 1, callback = function(value)
+        aimsnapline.Thickness = value
+    end})
+    :colorpicker({name = "Color", flag = "color", color = Color3.fromRGB(255, 255, 255), callback = function(color)
+        aimsnapline.Color = color
+    end})
+    :toggle({name = "HitSound", flag = "hitsound", callback = function(bool)
+        hitsoundbool = bool
+    end})
+    :dropdown({name = "Head Sound", flag = "head_sound", items = hitsoundlibUI, default = "Ding", callback = function(option)
+        hitsoundhead = option
+    end})
+    :dropdown({name = "Body Sound", flag = "body_sound", items = hitsoundlibUI, default = "Blackout", callback = function(option)
+        hitsoundbody = option
+    end})
+    :toggle({name = "Hitmarkers", flag = "hitmarkers", callback = function(bool)
+        hitmarkbool = bool
+    end})
+    :colorpicker({name = "Hitmark Color", flag = "hitmark_color", color = Color3.fromRGB(255, 255, 255), callback = function(color)
+        hitmarkcolor = color
+    end})
+    :slider({name = "Hitmark Fade Time", flag = "hitmark_fade_time", min = 0, max = 10, default = 2, callback = function(value)
+        hitmarkfade = value
+    end})
+
+-- Misc
+local column = Misc:column()
+column:section({name = "Gun Mods"})
+    :toggle({name = "Rapid Fire", flag = "rapid_fire", callback = function(bool)
+        rapidfire = bool
+    end})
+    :toggle({name = "Custom Rapid Fire", flag = "custom_rapid_fire", callback = function(bool)
+        crapidfire = bool
+    end})
+    :toggle({name = "Unlock Firemodes", flag = "unlock_firemodes", callback = function(bool)
+        unlockmodes = bool
+    end})
+    :toggle({name = "Instant Reload", flag = "instant_reload", callback = function(bool)
+        if bool then
+            require(game.ReplicatedStorage.Modules.FPS).reload = instrelMODfunc
+        else
+            require(game.ReplicatedStorage.Modules.FPS).reload = instrelOGfunc
+        end
+    end})
+    :toggle({name = "Instant Equip", flag = "instant_equip", callback = function(bool)
+        instaequip = bool
+    end})
+    :toggle({name = "No Sway", flag = "no_sway", callback = function(bool)
+        noswaybool = bool
+    end})
+    :slider({name = "Multitaps", flag = "multitaps", min = 1, max = 5, default = 1, callback = function(value)
+        multitaps = value
+    end})
+    :textbox({name = "Custom Rapid Fire Delay", flag = "custom_rapid_fire_delay", callback = function(value)
+        local num = tonumber(value)
+        if num then
+            crapidfirenum = num
+        end
+    end})
+
+column:section({name = "ESP"})
+    :toggle({name = "ESP", flag = "esp", callback = function(bool)
+        espbool = bool
+    end})
+    :toggle({name = "Name", flag = "esp_name", callback = function(bool)
+        espname = bool
+    end})
+    :toggle({name = "HP", flag = "esp_hp", callback = function(bool)
+        esphp = bool
+    end})
+    :toggle({name = "Distance", flag = "esp_distance", callback = function(bool)
+        espdistance = bool
+    end})
+    :toggle({name = "Chams", flag = "esp_chams", callback = function(bool)
+        esphigh = bool
+    end})
+    :toggle({name = "Active Gun", flag = "esp_active_gun", callback = function(bool)
+        esphotbar = bool
+    end})
+    :toggle({name = "Dead", flag = "esp_dead", callback = function(bool)
+        espdead = bool
+    end})
+    :toggle({name = "Bots", flag = "esp_bots", callback = function(bool)
+        espbots = bool
+    end})
+    :toggle({name = "Loot", flag = "esp_loot", callback = function(bool)
+        esploot = bool
+    end})
+    :toggle({name = "Extract", flag = "esp_extract", callback = function(bool)
+        espexit = bool
+    end})
+    :dropdown({name = "Distance Type", flag = "esp_distance_type", items = {"Meters", "Studs"}, default = "Meters", callback = function(option)
+        espdistmode = option
+    end})
+    :slider({name = "Render Distance", flag = "esp_render_distance", min = 50, max = 1200, default = 1000, callback = function(value)
+        esprenderdist = value
+    end})
+    :slider({name = "Text Size", flag = "esp_text_size", min = 1, max = 35, default = 14, callback = function(value)
+        esptextsize = value
+    end})
+    :toggle({name = "Text Outline", flag = "esp_text_outline", callback = function(bool)
+        esptextline = bool
+    end})
+    :slider({name = "Chams Outline Transparency", flag = "esp_chams_outline_transparency", min = 0, max = 1, default = 0, callback = function(value)
+        espchamsline = value
+    end})
+    :slider({name = "Chams Fill Transparency", flag = "esp_chams_fill_transparency", min = 0, max = 1, default = 0.5, callback = function(value)
+        espchamsfill = value
+    end})
+    :colorpicker({name = "Text Color", flag = "esp_text_color", color = Color3.fromRGB(255, 255, 255), callback = function(color)
+        esptextcolor = color
+    end})
+    :colorpicker({name = "Chams Outline Color", flag = "esp_chams_outline_color", color = Color3.fromRGB(255, 255, 255), callback = function(color)
+        esplinecolor = color
+    end})
+    :colorpicker({name = "Chams Fill Color", flag = "esp_chams_fill_color", color = Color3.fromRGB(255, 255, 255), callback = function(color)
+        espfillcolor = color
+    end})
+        local Settings = window:tab({name = "Settings"})
+        local column = Settings:column()
+            local section = column:section({name = "Options"})
+                local old_config = library:get_config()
+                _, config_holder = section:list({flag = "config_name_list"})
+                section:textbox({flag = "config_name_text_box"})
+                section:button_holder({})
+                section:button({name = "Create", callback = function()
+                    writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
+                    library:config_list_update()
+                end})
+                section:button({name = "Delete", callback = function()
+                    delfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg")
+                    library:config_list_update()
+                end})
+                section:button_holder({})
+                section:button({name = "Load", callback = function()
+                    library:load_config(readfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg"))
+                end})
+                section:button({name = "Save", callback = function()
+                    writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
+                    library:config_list_update()
+                end})
+                section:button_holder({})
+                section:button({name = "Unload Config", callback = function()
+                    library:load_config(old_config)
+                end})
+                section:button({name = "Unload Menu", callback = function()
+                    for _, gui in next, library.guis do 
+                        gui:Destroy() 
+                    end 
+
+                    for _, connection in next, library.connections do 
+                        connection:Disconnect() 
+                    end     
+
+                    for _, instance in next, milkyboy.instances do 
+                        instance:Destroy() 
+                    end 
+
+                    for _, drawing in next, milkyboy.drawings do 
+                        drawing:Remove()
+                    end 
+                end})
+        local column = Settings:column()
+            column:section({name = "Theme"})
+                :label({name = "Accent"})
+                :colorpicker({name = "Accent", color = themes.preset.accent, flag = "accent", callback = function(color, alpha)
+                    library:update_theme("accent", color)
+                end})
+                :label({name = "Contrast"})
+                :colorpicker({name = "Low", color = themes.preset.low_contrast, flag = "low_contrast", callback = function(color)
+                    if (flags["high_contrast"] and flags["low_contrast"]) then 
+                        library:update_theme("contrast", rgbseq{
+                            rgbkey(0, flags["low_contrast"].Color),
+                            rgbkey(1, flags["high_contrast"].Color)
+                        })
+                    end 
+                end})
+                :colorpicker({name = "High", color = themes.preset.high_contrast, flag = "high_contrast", callback = function(color)
+                    library:update_theme("contrast", rgbseq{
+                        rgbkey(0, flags["low_contrast"].Color),
+                        rgbkey(1, flags["high_contrast"].Color)
+                    })
+                end})
+                :label({name = "Inline"})
+                :colorpicker({name = "Inline", color = themes.preset.inline, callback = function(color, alpha)
+                    library:update_theme("inline", color)
+                end})
+                :label({name = "Outline"})
+                :colorpicker({name = "Outline", color = themes.preset.outline, callback = function(color, alpha)
+                    library:update_theme("outline", color)
+                end})
+                :label({name = "Text Color"})
+                :colorpicker({name = "Main", color = themes.preset.text, callback = function(color, alpha)
+                    library:update_theme("text", color)
+                end})
+                :colorpicker({name = "Outline", color = themes.preset.text_outline, callback = function(color, alpha)
+                    library:update_theme("text_outline", color)
+                end})
+                :label({name = "Glow"})
+                :colorpicker({name = "Glow", color = themes.preset.glow, callback = function(color, alpha)
+                    library:update_theme("glow", color)
+                end})
+                :label({name = "UI Bind"})
+                :keybind({callback = function(bool)
+                    library.frame.Enabled = bool
+                end})
+                :toggle({name = "Keybind List", flag = "keybind_list", callback = function(bool)
+                    library.keybind_list_frame.Visible = bool
+                end})
+library:config_list_update()
+
