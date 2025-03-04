@@ -5,6 +5,7 @@
 ]]
 
 
+print("MilkyBoy Is So Sigma And Sexy")
 
 -- if not (hookmetamethod or makefolder) then 
    -- warn("its ok")
@@ -4191,8 +4192,10 @@ end
 
             return self
         end 
-local Settings = window:tab({name = "Settings"})
-  local column = Settings:column()
+    -- 
+-- 
+            -- Settings
+        local column = Settings:column()
             local section = column:section({name = "Options"})
                 local old_config = library:get_config()
                 _, config_holder = section:list({flag = "config_name_list"})
@@ -4283,5 +4286,4 @@ local Settings = window:tab({name = "Settings"})
                     library.keybind_list_frame.Visible = bool
                 end})
                 
-    -- 
-library:config_list_update()
+return library
