@@ -467,7 +467,7 @@ end
             local sgui = library:create("ScreenGui", {
                 Enabled = true,
                 Parent = coregui,
-                Name = "" 
+                Name = "Morphine" 
             })
 
             local main_holder = library:create("Frame", {
@@ -626,25 +626,11 @@ end
             return holder, sgui      
         end 
 
-local UserInputService = game:GetService("UserInputService")
+local UIS = game:GetService("UserInputService")
+local sgui = library:create("ScreenGui", {Enabled = true, Parent = game.CoreGui, Name = "Morphine", DisplayOrder = 2}) 
 
--- Create the GUI
-local sgui = library:create("ScreenGui", {
-    Enabled = true,
-    Parent = game.CoreGui,
-    Name = "Morphine",
-    DisplayOrder = 2, 
-})
+UIS.InputBegan:Connect(function(i, p) if not p and i.KeyCode == Enum.KeyCode.LeftShift then sgui.Enabled = not sgui.Enabled end end)
 
--- Function to toggle visibility
-local guiVisible = true
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.LeftShift then
-        guiVisible = not guiVisible
-        sgui.Enabled = guiVisible
-    end
-end)
 
         function library:window(properties)
             local window = {}
