@@ -4191,6 +4191,7 @@ end
 
             return self
         end 
+local Settings = window:tab({name = "Settings"})
   local column = Settings:column()
             local section = column:section({name = "Options"})
                 local old_config = library:get_config()
