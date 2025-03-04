@@ -4191,5 +4191,96 @@ end
 
             return self
         end 
+  local column = Settings:column()
+            local section = column:section({name = "Options"})
+                local old_config = library:get_config()
+                _, config_holder = section:list({flag = "config_name_list"})
+                section:textbox({flag = "config_name_text_box"})
+                section:button_holder({})
+                section:button({name = "Create", callback = function()
+                    writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
+                    library:config_list_update()
+                end})
+                section:button({name = "Delete", callback = function()
+                    delfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg")
+                    library:config_list_update()
+                end})
+                section:button_holder({})
+                section:button({name = "Load", callback = function()
+                    library:load_config(readfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg"))
+                end})
+                section:button({name = "Save", callback = function()
+                    writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
+                    library:config_list_update()
+                end})
+                section:button_holder({})
+                section:button({name = "Unload Config", callback = function()
+                    library:load_config(old_config)
+                end})
+                section:button({name = "Unload Menu", callback = function()
+                    for _, gui in next, library.guis do 
+                        gui:Destroy() 
+                    end 
 
-    return library, milkyboy, themes
+                    for _, connection in next, library.connections do 
+                        connection:Disconnect() 
+                    end     
+
+                    for _, instance in next, milkyboy.instances do 
+                        instance:Destroy() 
+                    end 
+
+                    for _, drawing in next, milkyboy.drawings do 
+                        drawing:Remove()
+                    end 
+                end})
+        local column = Settings:column()
+            column:section({name = "Theme"})
+                :label({name = "Accent"})
+                :colorpicker({name = "Accent", color = themes.preset.accent, flag = "accent", callback = function(color, alpha)
+                    library:update_theme("accent", color)
+                end})
+                :label({name = "Contrast"})
+                :colorpicker({name = "Low", color = themes.preset.low_contrast, flag = "low_contrast", callback = function(color)
+                    if (flags["high_contrast"] and flags["low_contrast"]) then 
+                        library:update_theme("contrast", rgbseq{
+                            rgbkey(0, flags["low_contrast"].Color),
+                            rgbkey(1, flags["high_contrast"].Color)
+                        })
+                    end 
+                end})
+                :colorpicker({name = "High", color = themes.preset.high_contrast, flag = "high_contrast", callback = function(color)
+                    library:update_theme("contrast", rgbseq{
+                        rgbkey(0, flags["low_contrast"].Color),
+                        rgbkey(1, flags["high_contrast"].Color)
+                    })
+                end})
+                :label({name = "Inline"})
+                :colorpicker({name = "Inline", color = themes.preset.inline, callback = function(color, alpha)
+                    library:update_theme("inline", color)
+                end})
+                :label({name = "Outline"})
+                :colorpicker({name = "Outline", color = themes.preset.outline, callback = function(color, alpha)
+                    library:update_theme("outline", color)
+                end})
+                :label({name = "Text Color"})
+                :colorpicker({name = "Main", color = themes.preset.text, callback = function(color, alpha)
+                    library:update_theme("text", color)
+                end})
+                :colorpicker({name = "Outline", color = themes.preset.text_outline, callback = function(color, alpha)
+                    library:update_theme("text_outline", color)
+                end})
+                :label({name = "Glow"})
+                :colorpicker({name = "Glow", color = themes.preset.glow, callback = function(color, alpha)
+                    library:update_theme("glow", color)
+                end})
+                :label({name = "UI Bind"})
+                :keybind({callback = function(bool)
+                    library.frame.Enabled = bool
+                end})
+                :toggle({name = "Keybind List", flag = "keybind_list", callback = function(bool)
+                    library.keybind_list_frame.Visible = bool
+                end})
+                
+    -- 
+library:config_list_update()
