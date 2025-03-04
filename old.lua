@@ -629,9 +629,20 @@ end
         local sgui = library:create("ScreenGui", {
             Enabled = true,
             Parent = game.CoreGui,
-            Name = "",
+            Name = "Morphine",
             DisplayOrder = 2, 
         })
+
+
+local toggleKey = Enum.KeyCode.LeftShift
+local isVisible = true
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == toggleKey then
+        isVisible = not isVisible
+        sgui.Enabled = isVisible
+    end
+end)
 
         function library:window(properties)
             local window = {}
